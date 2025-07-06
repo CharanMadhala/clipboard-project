@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Copy, Edit, Trash2, Sun, Moon, Clipboard } from 'lucide-react';
 import { apiService, Clip, ClipFormData } from './services/api';
+import { CountTracker } from './components/CountTracker';
 
 function App() {
   const [clips, setClips] = useState<Clip[]>([]);
@@ -104,7 +105,7 @@ function App() {
   };
 
   const themeClasses = isDarkMode
-    ? 'bg-gray-900 text-gray-100'
+    ? 'bg-slate-900 text-slate-100'
     : 'bg-stone-100 text-stone-900';
 
   if (loading) {
@@ -112,14 +113,14 @@ function App() {
       <div className={`min-h-screen flex items-center justify-center font-roboto ${themeClasses}`}>
         <div className="text-center">
           <div className={`inline-flex p-4 rounded-full mb-4 ${
-            isDarkMode ? 'bg-gray-800' : 'bg-white border border-stone-300'
+            isDarkMode ? 'bg-slate-800' : 'bg-white border border-stone-300'
           }`}>
             <Clipboard className={`h-12 w-12 animate-pulse ${
-              isDarkMode ? 'text-gray-600' : 'text-stone-400'
+              isDarkMode ? 'text-slate-600' : 'text-stone-400'
             }`} />
           </div>
           <p className={`text-lg ${
-            isDarkMode ? 'text-gray-400' : 'text-stone-600'
+            isDarkMode ? 'text-slate-400' : 'text-stone-600'
           }`}>
             Loading clips...
           </p>
@@ -133,14 +134,14 @@ function App() {
       {/* Header */}
       <header className={`sticky top-0 z-40 backdrop-blur-md border-b ${
         isDarkMode 
-          ? 'bg-gray-900/90 border-gray-700' 
+          ? 'bg-slate-900/90 border-slate-700' 
           : 'bg-stone-100/90 border-stone-300'
       }`}>
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className={`p-2 rounded-lg ${
-                isDarkMode ? 'bg-amber-600' : 'bg-emerald-700'
+                isDarkMode ? 'bg-blue-600' : 'bg-emerald-700'
               }`}>
                 <Clipboard className="h-6 w-6 text-white" />
               </div>
@@ -152,7 +153,7 @@ function App() {
                 onClick={() => openModal()}
                 className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                   isDarkMode
-                    ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                    ? 'bg-blue-600 hover:bg-blue-700 text-white'
                     : 'bg-emerald-700 hover:bg-emerald-800 text-white'
                 }`}
               >
@@ -164,7 +165,7 @@ function App() {
                 onClick={toggleTheme}
                 className={`p-2 rounded-lg transition-colors ${
                   isDarkMode
-                    ? 'bg-gray-800 hover:bg-gray-700 text-gray-300'
+                    ? 'bg-slate-800 hover:bg-slate-700 text-slate-300'
                     : 'bg-white hover:bg-stone-200 text-stone-600 border border-stone-300'
                 }`}
               >
@@ -197,23 +198,23 @@ function App() {
       )}
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-7xl mx-auto px-4 py-8 pb-24">
         {clips.length === 0 ? (
           <div className="text-center py-16">
             <div className={`inline-flex p-4 rounded-full mb-4 ${
-              isDarkMode ? 'bg-gray-800' : 'bg-white border border-stone-300'
+              isDarkMode ? 'bg-slate-800' : 'bg-white border border-stone-300'
             }`}>
               <Clipboard className={`h-12 w-12 ${
-                isDarkMode ? 'text-gray-600' : 'text-stone-400'
+                isDarkMode ? 'text-slate-600' : 'text-stone-400'
               }`} />
             </div>
             <h2 className={`text-2xl font-semibold mb-2 ${
-              isDarkMode ? 'text-gray-300' : 'text-stone-700'
+              isDarkMode ? 'text-slate-300' : 'text-stone-700'
             }`}>
               No clips yet
             </h2>
             <p className={`text-lg mb-6 ${
-              isDarkMode ? 'text-gray-400' : 'text-stone-600'
+              isDarkMode ? 'text-slate-400' : 'text-stone-600'
             }`}>
               Start by adding your first clip to the collection
             </p>
@@ -221,7 +222,7 @@ function App() {
               onClick={() => openModal()}
               className={`inline-flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-colors ${
                 isDarkMode
-                  ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                  ? 'bg-blue-600 hover:bg-blue-700 text-white'
                   : 'bg-emerald-700 hover:bg-emerald-800 text-white'
               }`}
             >
@@ -236,7 +237,7 @@ function App() {
                 key={clip._id}
                 className={`group relative rounded-lg border p-4 h-24 transition-all duration-200 hover:shadow-lg cursor-pointer flex items-center justify-center ${
                   isDarkMode
-                    ? 'bg-gray-800 border-gray-700 hover:bg-gray-750'
+                    ? 'bg-slate-800 border-slate-700 hover:bg-slate-750'
                     : 'bg-white border-stone-300 hover:shadow-stone-200 hover:border-emerald-300'
                 } ${copiedId === clip._id ? 'ring-2 ring-green-500' : ''}`}
                 onClick={() => copyToClipboard(clip.content, clip._id)}
@@ -249,7 +250,7 @@ function App() {
                     }}
                     className={`p-1 rounded-md transition-colors ${
                       isDarkMode
-                        ? 'hover:bg-gray-700 text-gray-400 hover:text-gray-200'
+                        ? 'hover:bg-slate-700 text-slate-400 hover:text-slate-200'
                         : 'hover:bg-stone-200 text-stone-500 hover:text-stone-700'
                     }`}
                   >
@@ -262,7 +263,7 @@ function App() {
                     }}
                     className={`p-1 rounded-md transition-colors ${
                       isDarkMode
-                        ? 'hover:bg-red-900 text-gray-400 hover:text-red-400'
+                        ? 'hover:bg-red-900 text-slate-400 hover:text-red-400'
                         : 'hover:bg-red-100 text-stone-500 hover:text-red-600'
                     }`}
                   >
@@ -271,7 +272,7 @@ function App() {
                 </div>
 
                 <h3 className={`font-medium text-sm text-center leading-tight ${
-                  isDarkMode ? 'text-gray-200' : 'text-stone-800'
+                  isDarkMode ? 'text-slate-200' : 'text-stone-800'
                 }`}>
                   {clip.title}
                 </h3>
@@ -290,17 +291,20 @@ function App() {
         )}
       </main>
 
+      {/* Count Tracker */}
+      <CountTracker isDarkMode={isDarkMode} />
+
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
           <div className={`w-full max-w-md rounded-lg shadow-xl ${
-            isDarkMode ? 'bg-gray-800' : 'bg-white border border-stone-300'
+            isDarkMode ? 'bg-slate-800' : 'bg-white border border-stone-300'
           }`}>
             <div className={`flex items-center justify-between p-6 border-b ${
-              isDarkMode ? 'border-gray-700' : 'border-stone-200'
+              isDarkMode ? 'border-slate-700' : 'border-stone-200'
             }`}>
               <h2 className={`text-xl font-semibold ${
-                isDarkMode ? 'text-gray-200' : 'text-stone-900'
+                isDarkMode ? 'text-slate-200' : 'text-stone-900'
               }`}>
                 {editingClip ? 'Edit Clip' : 'Add New Clip'}
               </h2>
@@ -315,7 +319,7 @@ function App() {
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
                 <label className={`block text-sm font-medium mb-2 ${
-                  isDarkMode ? 'text-gray-300' : 'text-stone-700'
+                  isDarkMode ? 'text-slate-300' : 'text-stone-700'
                 }`}>
                   Cover Title
                 </label>
@@ -325,7 +329,7 @@ function App() {
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 font-roboto ${
                     isDarkMode
-                      ? 'bg-gray-700 border-gray-600 text-gray-200 focus:ring-amber-500'
+                      ? 'bg-slate-700 border-slate-600 text-slate-200 focus:ring-blue-500'
                       : 'bg-white border-stone-300 text-stone-900 focus:ring-emerald-500'
                   }`}
                   placeholder="Enter a title for this clip"
@@ -335,7 +339,7 @@ function App() {
 
               <div>
                 <label className={`block text-sm font-medium mb-2 ${
-                  isDarkMode ? 'text-gray-300' : 'text-stone-700'
+                  isDarkMode ? 'text-slate-300' : 'text-stone-700'
                 }`}>
                   Content
                 </label>
@@ -344,7 +348,7 @@ function App() {
                   onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 resize-none font-roboto ${
                     isDarkMode
-                      ? 'bg-gray-700 border-gray-600 text-gray-200 focus:ring-amber-500'
+                      ? 'bg-slate-700 border-slate-600 text-slate-200 focus:ring-blue-500'
                       : 'bg-white border-stone-300 text-stone-900 focus:ring-emerald-500'
                   }`}
                   placeholder="Paste or type your content here"
@@ -359,7 +363,7 @@ function App() {
                   onClick={closeModal}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     isDarkMode
-                      ? 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                      ? 'bg-slate-700 hover:bg-slate-600 text-slate-300'
                       : 'bg-stone-200 hover:bg-stone-300 text-stone-700'
                   }`}
                 >
@@ -369,7 +373,7 @@ function App() {
                   type="submit"
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     isDarkMode
-                      ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                      ? 'bg-blue-600 hover:bg-blue-700 text-white'
                       : 'bg-emerald-700 hover:bg-emerald-800 text-white'
                   }`}
                 >
