@@ -13,4 +13,17 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    // Optimize build performance
+    target: 'esnext',
+    minify: 'esbuild',
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+        },
+      },
+    },
+  },
 })

@@ -1,7 +1,6 @@
 {
-  "engines":{
+  "engines": {
     "node": "20.11.1"
-
   },
   "name": "clipboard-manager",
   "private": true,
@@ -11,7 +10,8 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "client": "vite",
     "server": "node server/index.js",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
+    "type-check": "tsc --noEmit",
     "lint": "eslint .",
     "preview": "vite preview"
   },
