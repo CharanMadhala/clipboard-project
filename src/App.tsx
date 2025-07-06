@@ -3,6 +3,193 @@ import { Plus, Copy, Edit, Trash2, Sun, Moon, Clipboard } from 'lucide-react';
 import { apiService, Clip, ClipFormData } from './services/api';
 import { CountTracker } from './components/CountTracker';
 
+// Default clips data
+const defaultClips = [
+  {
+    title: "Welcome Message",
+    content: "Welcome to your Clipboard Manager! This is your first clip. You can edit, delete, or copy this content by clicking on it."
+  },
+  {
+    title: "JavaScript Array Methods",
+    content: `// Common JavaScript array methods
+const numbers = [1, 2, 3, 4, 5];
+
+// Map - transform each element
+const doubled = numbers.map(n => n * 2);
+
+// Filter - select elements that match condition
+const evens = numbers.filter(n => n % 2 === 0);
+
+// Reduce - combine all elements into single value
+const sum = numbers.reduce((acc, n) => acc + n, 0);`
+  },
+  {
+    title: "CSS Flexbox Cheat Sheet",
+    content: `/* Flexbox Container Properties */
+.container {
+  display: flex;
+  flex-direction: row | column;
+  justify-content: flex-start | center | flex-end | space-between | space-around;
+  align-items: stretch | flex-start | center | flex-end;
+  flex-wrap: nowrap | wrap | wrap-reverse;
+}
+
+/* Flexbox Item Properties */
+.item {
+  flex: 1; /* grow, shrink, basis */
+  align-self: auto | flex-start | center | flex-end;
+}`
+  },
+  {
+    title: "Git Commands",
+    content: `# Essential Git commands
+git init                    # Initialize repository
+git add .                   # Stage all changes
+git commit -m "message"     # Commit with message
+git push origin main        # Push to remote
+git pull origin main        # Pull from remote
+git status                  # Check status
+git log --oneline          # View commit history
+git branch -b feature      # Create new branch
+git checkout main          # Switch branch
+git merge feature          # Merge branch`
+  },
+  {
+    title: "React Hooks Examples",
+    content: `import React, { useState, useEffect, useContext } from 'react';
+
+// useState Hook
+const [count, setCount] = useState(0);
+
+// useEffect Hook
+useEffect(() => {
+  document.title = \`Count: \${count}\`;
+  
+  // Cleanup function
+  return () => {
+    console.log('Cleanup');
+  };
+}, [count]); // Dependency array
+
+// Custom Hook
+function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() => {
+    return localStorage.getItem(key) || initialValue;
+  });
+  
+  useEffect(() => {
+    localStorage.setItem(key, value);
+  }, [key, value]);
+  
+  return [value, setValue];
+}`
+  },
+  {
+    title: "SQL Query Examples",
+    content: `-- Basic SQL queries
+SELECT * FROM users WHERE age > 18;
+
+-- Join tables
+SELECT u.name, p.title 
+FROM users u 
+JOIN posts p ON u.id = p.user_id;
+
+-- Aggregate functions
+SELECT COUNT(*), AVG(age), MAX(created_at)
+FROM users 
+GROUP BY department;
+
+-- Subquery
+SELECT name FROM users 
+WHERE id IN (
+  SELECT user_id FROM orders 
+  WHERE total > 100
+);
+
+-- Update and Delete
+UPDATE users SET email = 'new@email.com' WHERE id = 1;
+DELETE FROM posts WHERE created_at < '2023-01-01';`
+  },
+  {
+    title: "Python List Comprehensions",
+    content: `# Basic list comprehension
+squares = [x**2 for x in range(10)]
+
+# With condition
+evens = [x for x in range(20) if x % 2 == 0]
+
+# Nested comprehension
+matrix = [[i*j for j in range(3)] for i in range(3)]
+
+# Dictionary comprehension
+word_lengths = {word: len(word) for word in ['hello', 'world', 'python']}
+
+# Set comprehension
+unique_lengths = {len(word) for word in ['hello', 'world', 'hello']}
+
+# Generator expression
+sum_of_squares = sum(x**2 for x in range(100))`
+  },
+  {
+    title: "Docker Commands",
+    content: `# Docker essential commands
+docker build -t myapp .              # Build image
+docker run -p 3000:3000 myapp        # Run container
+docker ps                            # List running containers
+docker ps -a                         # List all containers
+docker images                        # List images
+docker stop container_id             # Stop container
+docker rm container_id               # Remove container
+docker rmi image_id                  # Remove image
+docker exec -it container_id bash    # Execute command in container
+docker logs container_id             # View logs
+
+# Docker Compose
+docker-compose up -d                 # Start services
+docker-compose down                  # Stop services
+docker-compose logs                  # View logs`
+  },
+  {
+    title: "Regex Patterns",
+    content: `// Common regex patterns
+const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const phone = /^\+?[\d\s\-\(\)]+$/;
+const url = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/;
+const password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+// Usage examples
+const isValidEmail = email.test('user@example.com');
+const extractNumbers = '123-456-7890'.match(/\d+/g);
+const replaceSpaces = 'hello world'.replace(/\s+/g, '-');`
+  },
+  {
+    title: "API Response Template",
+    content: `{
+  "status": "success",
+  "data": {
+    "id": "12345",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "profile": {
+      "avatar": "https://example.com/avatar.jpg",
+      "bio": "Software developer",
+      "location": "San Francisco, CA"
+    },
+    "preferences": {
+      "theme": "dark",
+      "notifications": true,
+      "language": "en"
+    }
+  },
+  "meta": {
+    "timestamp": "2024-01-15T10:30:00Z",
+    "version": "1.0",
+    "total_count": 1
+  }
+}`
+  }
+];
+
 function App() {
   const [clips, setClips] = useState<Clip[]>([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -12,6 +199,8 @@ function App() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [insertPosition, setInsertPosition] = useState<number | null>(null);
+  const [defaultClipsCreated, setDefaultClipsCreated] = useState(false);
 
   // Load clips and theme
   useEffect(() => {
@@ -27,6 +216,32 @@ function App() {
   useEffect(() => {
     localStorage.setItem('clipboardManager_theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
+
+  // Create default clips if none exist
+  useEffect(() => {
+    const createDefaultClips = async () => {
+      if (clips.length === 0 && !loading && !defaultClipsCreated) {
+        try {
+          console.log('Creating default clips...');
+          const createdClips: Clip[] = [];
+          
+          for (const clipData of defaultClips) {
+            const newClip = await apiService.createClip(clipData);
+            createdClips.push(newClip);
+          }
+          
+          setClips(createdClips);
+          setDefaultClipsCreated(true);
+          console.log('Default clips created successfully!');
+        } catch (err) {
+          console.error('Error creating default clips:', err);
+          setError('Failed to create default clips. You can add them manually.');
+        }
+      }
+    };
+
+    createDefaultClips();
+  }, [clips.length, loading, defaultClipsCreated]);
 
   const loadClips = async () => {
     try {
@@ -46,13 +261,15 @@ function App() {
     setIsDarkMode(!isDarkMode);
   };
 
-  const openModal = (clip?: Clip) => {
+  const openModal = (clip?: Clip, position?: number) => {
     if (clip) {
       setEditingClip(clip);
       setFormData({ title: clip.title, content: clip.content });
+      setInsertPosition(null);
     } else {
       setEditingClip(null);
       setFormData({ title: '', content: '' });
+      setInsertPosition(position ?? null);
     }
     setIsModalOpen(true);
   };
@@ -61,6 +278,7 @@ function App() {
     setIsModalOpen(false);
     setEditingClip(null);
     setFormData({ title: '', content: '' });
+    setInsertPosition(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -75,7 +293,16 @@ function App() {
         ));
       } else {
         const newClip = await apiService.createClip(formData);
-        setClips([...clips, newClip]);
+        
+        if (insertPosition !== null) {
+          // Insert at specific position
+          const newClips = [...clips];
+          newClips.splice(insertPosition, 0, newClip);
+          setClips(newClips);
+        } else {
+          // Add to end
+          setClips([...clips, newClip]);
+        }
       }
       closeModal();
     } catch (err) {
@@ -211,82 +438,109 @@ function App() {
             <h2 className={`text-2xl font-semibold mb-2 ${
               isDarkMode ? 'text-slate-300' : 'text-stone-700'
             }`}>
-              No clips yet
+              Setting up your clips...
             </h2>
             <p className={`text-lg mb-6 ${
               isDarkMode ? 'text-slate-400' : 'text-stone-600'
             }`}>
-              Start by adding your first clip to the collection
+              Creating default clips for you to get started
             </p>
-            <button
-              onClick={() => openModal()}
-              className={`inline-flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-colors ${
-                isDarkMode
-                  ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                  : 'bg-emerald-700 hover:bg-emerald-800 text-white'
-              }`}
-            >
-              <Plus className="h-5 w-5" />
-              <span>Add Your First Clip</span>
-            </button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {clips.map((clip) => (
-              <div
-                key={clip._id}
-                className={`group relative rounded-lg border p-4 h-24 transition-all duration-200 hover:shadow-lg cursor-pointer flex items-center justify-center ${
-                  isDarkMode
-                    ? 'bg-slate-800 border-slate-700 hover:bg-slate-750'
-                    : 'bg-white border-stone-300 hover:shadow-stone-200 hover:border-emerald-300'
-                } ${copiedId === clip._id ? 'ring-2 ring-green-500' : ''}`}
-                onClick={() => copyToClipboard(clip.content, clip._id)}
-              >
-                <div className="absolute top-2 right-2 flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openModal(clip);
-                    }}
-                    className={`p-1 rounded-md transition-colors ${
-                      isDarkMode
-                        ? 'hover:bg-slate-700 text-slate-400 hover:text-slate-200'
-                        : 'hover:bg-stone-200 text-stone-500 hover:text-stone-700'
-                    }`}
-                  >
-                    <Edit className="h-3 w-3" />
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      deleteClip(clip._id);
-                    }}
-                    className={`p-1 rounded-md transition-colors ${
-                      isDarkMode
-                        ? 'hover:bg-red-900 text-slate-400 hover:text-red-400'
-                        : 'hover:bg-red-100 text-stone-500 hover:text-red-600'
-                    }`}
-                  >
-                    <Trash2 className="h-3 w-3" />
-                  </button>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {clips.map((clip, index) => (
+              <div key={clip._id} className="flex items-center space-x-3">
+                {/* Clip Card */}
+                <div
+                  className={`group relative flex-1 h-16 rounded-lg border p-4 transition-all duration-200 hover:shadow-lg cursor-pointer flex items-center ${
+                    isDarkMode
+                      ? 'bg-slate-800 border-slate-700 hover:bg-slate-750 hover:border-slate-600'
+                      : 'bg-white border-stone-300 hover:shadow-stone-200 hover:border-emerald-300'
+                  } ${copiedId === clip._id ? 'ring-2 ring-green-500' : ''}`}
+                  onClick={() => copyToClipboard(clip.content, clip._id)}
+                >
+                  {/* Action buttons */}
+                  <div className="absolute top-2 right-2 flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openModal(clip);
+                      }}
+                      className={`p-1.5 rounded-md transition-colors ${
+                        isDarkMode
+                          ? 'hover:bg-slate-700 text-slate-400 hover:text-slate-200'
+                          : 'hover:bg-stone-200 text-stone-500 hover:text-stone-700'
+                      }`}
+                      title="Edit clip"
+                    >
+                      <Edit className="h-3.5 w-3.5" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteClip(clip._id);
+                      }}
+                      className={`p-1.5 rounded-md transition-colors ${
+                        isDarkMode
+                          ? 'hover:bg-red-900 text-slate-400 hover:text-red-400'
+                          : 'hover:bg-red-100 text-stone-500 hover:text-red-600'
+                      }`}
+                      title="Delete clip"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+
+                  {/* Clip title */}
+                  <div className="pr-16 flex-1">
+                    <h3 className={`font-semibold text-base truncate ${
+                      isDarkMode ? 'text-slate-200' : 'text-stone-800'
+                    }`}>
+                      {clip.title}
+                    </h3>
+                  </div>
+
+                  {/* Copy feedback overlay */}
+                  {copiedId === clip._id && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg">
+                      <div className="flex items-center space-x-2 text-white">
+                        <Copy className="h-4 w-4" />
+                        <span className="font-medium text-sm">Copied!</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                <h3 className={`font-medium text-sm text-center leading-tight ${
-                  isDarkMode ? 'text-slate-200' : 'text-stone-800'
-                }`}>
-                  {clip.title}
-                </h3>
-
-                {copiedId === clip._id && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg">
-                    <div className="flex items-center space-x-2 text-white">
-                      <Copy className="h-4 w-4" />
-                      <span className="font-medium text-xs">Copied!</span>
-                    </div>
-                  </div>
-                )}
+                {/* Small circular add button next to clip */}
+                <button
+                  onClick={() => openModal(undefined, index + 1)}
+                  className={`flex-shrink-0 w-8 h-8 rounded-full border-2 border-dashed transition-all duration-200 hover:scale-110 flex items-center justify-center ${
+                    isDarkMode
+                      ? 'border-slate-600 hover:border-blue-500 hover:bg-blue-500/10 text-slate-500 hover:text-blue-400'
+                      : 'border-stone-400 hover:border-emerald-600 hover:bg-emerald-50 text-stone-500 hover:text-emerald-600'
+                  }`}
+                  title="Insert clip here"
+                >
+                  <Plus className="h-4 w-4" />
+                </button>
               </div>
             ))}
+
+            {/* Final add button - spans full width */}
+            <div className="col-span-full flex justify-center pt-4">
+              <button
+                onClick={() => openModal()}
+                className={`h-16 w-full max-w-md rounded-lg border-2 border-dashed transition-all duration-200 hover:scale-105 flex items-center justify-center ${
+                  isDarkMode
+                    ? 'border-slate-600 hover:border-blue-500 hover:bg-blue-500/10 text-slate-500 hover:text-blue-400'
+                    : 'border-stone-400 hover:border-emerald-600 hover:bg-emerald-50 text-stone-500 hover:text-emerald-600'
+                }`}
+                title="Add new clip"
+              >
+                <Plus className="h-6 w-6 mr-2" />
+                <span className="font-medium">Add New Clip</span>
+              </button>
+            </div>
           </div>
         )}
       </main>
@@ -306,7 +560,7 @@ function App() {
               <h2 className={`text-xl font-semibold ${
                 isDarkMode ? 'text-slate-200' : 'text-stone-900'
               }`}>
-                {editingClip ? 'Edit Clip' : 'Add New Clip'}
+                {editingClip ? 'Edit Clip' : insertPosition !== null ? `Insert Clip at Position ${insertPosition + 1}` : 'Add New Clip'}
               </h2>
               <button
                 onClick={closeModal}
