@@ -453,7 +453,7 @@ function App() {
               <div key={clip._id} className="flex items-center space-x-2 sm:space-x-3">
                 {/* Clip Card */}
                 <div
-                  className={`group relative flex-1 h-16 rounded-lg border p-3 sm:p-4 transition-all duration-200 hover:shadow-lg cursor-pointer flex items-center ${
+                  className={`group relative flex-1 h-16 rounded-lg border p-3 sm:p-4 transition-all duration-200 hover:shadow-lg cursor-pointer flex items-center justify-center ${
                     isDarkMode
                       ? 'bg-slate-800 border-slate-700 hover:bg-slate-750 hover:border-slate-600'
                       : 'bg-white border-stone-300 hover:shadow-stone-200 hover:border-emerald-300'
@@ -492,11 +492,11 @@ function App() {
                     </button>
                   </div>
 
-                  {/* Clip title */}
-                  <div className="pr-12 sm:pr-16 flex-1">
-                    <h3 className={`font-semibold text-sm sm:text-base truncate ${
+                  {/* Clip title - centered */}
+                  <div className="text-center px-8 sm:px-12 flex-1">
+                    <h3 className={`font-semibold truncate ${
                       isDarkMode ? 'text-slate-200' : 'text-stone-800'
-                    }`}>
+                    }`} style={{ fontSize: 'clamp(0.75rem, 2.5vw, 1rem)' }}>
                       {clip.title}
                     </h3>
                   </div>
@@ -515,14 +515,14 @@ function App() {
                 {/* Small circular add button next to clip */}
                 <button
                   onClick={() => openModal(undefined, index + 1)}
-                  className={`flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-dashed transition-all duration-200 hover:scale-110 flex items-center justify-center ${
+                  className={`flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-dashed transition-all duration-200 hover:scale-110 flex items-center justify-center ${
                     isDarkMode
                       ? 'border-slate-600 hover:border-blue-500 hover:bg-blue-500/10 text-slate-500 hover:text-blue-400'
                       : 'border-stone-400 hover:border-emerald-600 hover:bg-emerald-50 text-stone-500 hover:text-emerald-600'
                   }`}
                   title="Insert clip here"
                 >
-                  <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <Plus className="h-2 w-2 sm:h-3 sm:w-3" />
                 </button>
               </div>
             ))}
