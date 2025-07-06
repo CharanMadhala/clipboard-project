@@ -372,20 +372,21 @@ function App() {
               }`}>
                 <Clipboard className="h-6 w-6 text-white" />
               </div>
-              <h1 className="text-2xl font-bold">Clipboard Manager</h1>
+              <h1 className="text-xl sm:text-2xl font-bold">Clipboard Manager</h1>
             </div>
             
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <button
                 onClick={() => openModal()}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                className={`flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base ${
                   isDarkMode
                     ? 'bg-blue-600 hover:bg-blue-700 text-white'
                     : 'bg-emerald-700 hover:bg-emerald-800 text-white'
                 }`}
               >
-                <Plus className="h-4 w-4" />
-                <span>Add Clip</span>
+                <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="hidden sm:inline">Add Clip</span>
+                <span className="sm:hidden">Add</span>
               </button>
               
               <button
@@ -396,7 +397,7 @@ function App() {
                     : 'bg-white hover:bg-stone-200 text-stone-600 border border-stone-300'
                 }`}
               >
-                {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                {isDarkMode ? <Sun className="h-4 w-4 sm:h-5 sm:w-5" /> : <Moon className="h-4 w-4 sm:h-5 sm:w-5" />}
               </button>
             </div>
           </div>
@@ -412,10 +413,10 @@ function App() {
               : 'bg-red-50 border-red-200 text-red-700'
           }`}>
             <div className="flex items-center justify-between">
-              <span>{error}</span>
+              <span className="text-sm">{error}</span>
               <button
                 onClick={() => setError(null)}
-                className="ml-4 text-sm underline hover:no-underline"
+                className="ml-4 text-xs underline hover:no-underline"
               >
                 Dismiss
               </button>
@@ -435,24 +436,24 @@ function App() {
                 isDarkMode ? 'text-slate-600' : 'text-stone-400'
               }`} />
             </div>
-            <h2 className={`text-2xl font-semibold mb-2 ${
+            <h2 className={`text-xl sm:text-2xl font-semibold mb-2 ${
               isDarkMode ? 'text-slate-300' : 'text-stone-700'
             }`}>
               Setting up your clips...
             </h2>
-            <p className={`text-lg mb-6 ${
+            <p className={`text-base sm:text-lg mb-6 ${
               isDarkMode ? 'text-slate-400' : 'text-stone-600'
             }`}>
               Creating default clips for you to get started
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
             {clips.map((clip, index) => (
-              <div key={clip._id} className="flex items-center space-x-3">
+              <div key={clip._id} className="flex items-center space-x-2 sm:space-x-3">
                 {/* Clip Card */}
                 <div
-                  className={`group relative flex-1 h-16 rounded-lg border p-4 transition-all duration-200 hover:shadow-lg cursor-pointer flex items-center ${
+                  className={`group relative flex-1 h-16 rounded-lg border p-3 sm:p-4 transition-all duration-200 hover:shadow-lg cursor-pointer flex items-center ${
                     isDarkMode
                       ? 'bg-slate-800 border-slate-700 hover:bg-slate-750 hover:border-slate-600'
                       : 'bg-white border-stone-300 hover:shadow-stone-200 hover:border-emerald-300'
@@ -460,40 +461,40 @@ function App() {
                   onClick={() => copyToClipboard(clip.content, clip._id)}
                 >
                   {/* Action buttons */}
-                  <div className="absolute top-2 right-2 flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute top-1.5 sm:top-2 right-1.5 sm:right-2 flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         openModal(clip);
                       }}
-                      className={`p-1.5 rounded-md transition-colors ${
+                      className={`p-1 sm:p-1.5 rounded-md transition-colors ${
                         isDarkMode
                           ? 'hover:bg-slate-700 text-slate-400 hover:text-slate-200'
                           : 'hover:bg-stone-200 text-stone-500 hover:text-stone-700'
                       }`}
                       title="Edit clip"
                     >
-                      <Edit className="h-3.5 w-3.5" />
+                      <Edit className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                     </button>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         deleteClip(clip._id);
                       }}
-                      className={`p-1.5 rounded-md transition-colors ${
+                      className={`p-1 sm:p-1.5 rounded-md transition-colors ${
                         isDarkMode
                           ? 'hover:bg-red-900 text-slate-400 hover:text-red-400'
                           : 'hover:bg-red-100 text-stone-500 hover:text-red-600'
                       }`}
                       title="Delete clip"
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
+                      <Trash2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                     </button>
                   </div>
 
                   {/* Clip title */}
-                  <div className="pr-16 flex-1">
-                    <h3 className={`font-semibold text-base truncate ${
+                  <div className="pr-12 sm:pr-16 flex-1">
+                    <h3 className={`font-semibold text-sm sm:text-base truncate ${
                       isDarkMode ? 'text-slate-200' : 'text-stone-800'
                     }`}>
                       {clip.title}
@@ -503,9 +504,9 @@ function App() {
                   {/* Copy feedback overlay */}
                   {copiedId === clip._id && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg">
-                      <div className="flex items-center space-x-2 text-white">
-                        <Copy className="h-4 w-4" />
-                        <span className="font-medium text-sm">Copied!</span>
+                      <div className="flex items-center space-x-1 sm:space-x-2 text-white">
+                        <Copy className="h-3 w-3 sm:h-4 sm:w-4" />
+                        <span className="font-medium text-xs sm:text-sm">Copied!</span>
                       </div>
                     </div>
                   )}
@@ -514,14 +515,14 @@ function App() {
                 {/* Small circular add button next to clip */}
                 <button
                   onClick={() => openModal(undefined, index + 1)}
-                  className={`flex-shrink-0 w-8 h-8 rounded-full border-2 border-dashed transition-all duration-200 hover:scale-110 flex items-center justify-center ${
+                  className={`flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-dashed transition-all duration-200 hover:scale-110 flex items-center justify-center ${
                     isDarkMode
                       ? 'border-slate-600 hover:border-blue-500 hover:bg-blue-500/10 text-slate-500 hover:text-blue-400'
                       : 'border-stone-400 hover:border-emerald-600 hover:bg-emerald-50 text-stone-500 hover:text-emerald-600'
                   }`}
                   title="Insert clip here"
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
                 </button>
               </div>
             ))}
@@ -537,8 +538,8 @@ function App() {
                 }`}
                 title="Add new clip"
               >
-                <Plus className="h-6 w-6 mr-2" />
-                <span className="font-medium">Add New Clip</span>
+                <Plus className="h-5 w-5 sm:h-6 sm:w-6 mr-2" />
+                <span className="font-medium text-sm sm:text-base">Add New Clip</span>
               </button>
             </div>
           </div>
@@ -554,10 +555,10 @@ function App() {
           <div className={`w-full max-w-md rounded-lg shadow-xl ${
             isDarkMode ? 'bg-slate-800' : 'bg-white border border-stone-300'
           }`}>
-            <div className={`flex items-center justify-between p-6 border-b ${
+            <div className={`flex items-center justify-between p-4 sm:p-6 border-b ${
               isDarkMode ? 'border-slate-700' : 'border-stone-200'
             }`}>
-              <h2 className={`text-xl font-semibold ${
+              <h2 className={`text-lg sm:text-xl font-semibold ${
                 isDarkMode ? 'text-slate-200' : 'text-stone-900'
               }`}>
                 {editingClip ? 'Edit Clip' : insertPosition !== null ? `Insert Clip at Position ${insertPosition + 1}` : 'Add New Clip'}
@@ -566,11 +567,11 @@ function App() {
                 onClick={closeModal}
                 className={`text-gray-400 hover:text-gray-600 dark:hover:text-gray-200`}
               >
-                <Plus className="h-6 w-6 rotate-45" />
+                <Plus className="h-5 w-5 sm:h-6 sm:w-6 rotate-45" />
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4">
               <div>
                 <label className={`block text-sm font-medium mb-2 ${
                   isDarkMode ? 'text-slate-300' : 'text-stone-700'
@@ -581,7 +582,7 @@ function App() {
                   type="text"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 font-roboto ${
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 font-roboto text-sm sm:text-base ${
                     isDarkMode
                       ? 'bg-slate-700 border-slate-600 text-slate-200 focus:ring-blue-500'
                       : 'bg-white border-stone-300 text-stone-900 focus:ring-emerald-500'
@@ -600,7 +601,7 @@ function App() {
                 <textarea
                   value={formData.content}
                   onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 resize-none font-roboto ${
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 resize-none font-roboto text-sm sm:text-base ${
                     isDarkMode
                       ? 'bg-slate-700 border-slate-600 text-slate-200 focus:ring-blue-500'
                       : 'bg-white border-stone-300 text-stone-900 focus:ring-emerald-500'
@@ -615,7 +616,7 @@ function App() {
                 <button
                   type="button"
                   onClick={closeModal}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base ${
                     isDarkMode
                       ? 'bg-slate-700 hover:bg-slate-600 text-slate-300'
                       : 'bg-stone-200 hover:bg-stone-300 text-stone-700'
@@ -625,7 +626,7 @@ function App() {
                 </button>
                 <button
                   type="submit"
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base ${
                     isDarkMode
                       ? 'bg-blue-600 hover:bg-blue-700 text-white'
                       : 'bg-emerald-700 hover:bg-emerald-800 text-white'
