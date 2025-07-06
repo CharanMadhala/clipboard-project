@@ -4,6 +4,7 @@ import { MongoClient, ObjectId } from 'mongodb';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { createRequire } from 'module';
 
 // Get the directory name of the current module
 const __filename = fileURLToPath(import.meta.url);
@@ -188,6 +189,19 @@ app.delete('/api/clips/:id', async (req, res) => {
   } catch (error) {
     console.error('❌ Error deleting clip:', error);
     res.status(500).json({ error: 'Failed to delete clip' });
+  }
+});
+
+// Serve static files from the Vite build
+const require = createRequire(import.meta.url);
+app.use(express.static(join(__dirname, '../dist')));
+
+// For any route not starting with /api, serve index.html (for React Router)
+app.get('*', (req, res, next) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(join(__dirname, '../dist/index.html'));
+  } else {
+    next();
   }
 });
 
