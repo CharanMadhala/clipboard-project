@@ -448,7 +448,7 @@ function App() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+          <div className="grid grid-cols-1 min-[300px]:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
             {clips.map((clip, index) => (
               <div key={clip._id} className="flex items-center space-x-2 sm:space-x-3">
                 {/* Clip Card */}
@@ -460,35 +460,35 @@ function App() {
                   } ${copiedId === clip._id ? 'ring-2 ring-green-500' : ''}`}
                   onClick={() => copyToClipboard(clip.content, clip._id)}
                 >
-                  {/* Action buttons */}
-                  <div className="absolute top-1.5 sm:top-2 right-1.5 sm:right-2 flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  {/* Action buttons - Reduced container size */}
+                  <div className="absolute top-1 sm:top-2 right-1 sm:right-2 flex items-center space-x-0.5 sm:space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         openModal(clip);
                       }}
-                      className={`p-1 sm:p-1.5 rounded-md transition-colors ${
+                      className={`p-0.5 sm:p-1.5 rounded transition-colors ${
                         isDarkMode
                           ? 'hover:bg-slate-700 text-slate-400 hover:text-slate-200'
                           : 'hover:bg-stone-200 text-stone-500 hover:text-stone-700'
                       }`}
                       title="Edit clip"
                     >
-                      <Edit className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                      <Edit className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5" />
                     </button>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         deleteClip(clip._id);
                       }}
-                      className={`p-1 sm:p-1.5 rounded-md transition-colors ${
+                      className={`p-0.5 sm:p-1.5 rounded transition-colors ${
                         isDarkMode
                           ? 'hover:bg-red-900 text-slate-400 hover:text-red-400'
                           : 'hover:bg-red-100 text-stone-500 hover:text-red-600'
                       }`}
                       title="Delete clip"
                     >
-                      <Trash2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                      <Trash2 className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5" />
                     </button>
                   </div>
 
@@ -512,17 +512,17 @@ function App() {
                   )}
                 </div>
 
-                {/* Small circular add button next to clip */}
+                {/* Small circular add button next to clip - HIDDEN on small screens */}
                 <button
                   onClick={() => openModal(undefined, index + 1)}
-                  className={`flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-dashed transition-all duration-200 hover:scale-110 flex items-center justify-center ${
+                  className={`hidden sm:flex flex-shrink-0 w-6 h-6 rounded-full border-2 border-dashed transition-all duration-200 hover:scale-110 items-center justify-center ${
                     isDarkMode
                       ? 'border-slate-600 hover:border-blue-500 hover:bg-blue-500/10 text-slate-500 hover:text-blue-400'
                       : 'border-stone-400 hover:border-emerald-600 hover:bg-emerald-50 text-stone-500 hover:text-emerald-600'
                   }`}
                   title="Insert clip here"
                 >
-                  <Plus className="h-2 w-2 sm:h-3 sm:w-3" />
+                  <Plus className="h-3 w-3" />
                 </button>
               </div>
             ))}
