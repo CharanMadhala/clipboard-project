@@ -460,8 +460,8 @@ function App() {
                   } ${copiedId === clip._id ? 'ring-2 ring-green-500' : ''}`}
                   onClick={() => copyToClipboard(clip.content, clip._id)}
                 >
-                  {/* Action buttons - Reduced container size */}
-                  <div className="absolute top-1 sm:top-2 right-1 sm:right-2 flex items-center space-x-0.5 sm:space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  {/* Action buttons - HIDDEN on small screens (< 640px) */}
+                  <div className="hidden sm:flex absolute top-1 sm:top-2 right-1 sm:right-2 items-center space-x-0.5 sm:space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -512,7 +512,7 @@ function App() {
                   )}
                 </div>
 
-                {/* Small circular add button next to clip - HIDDEN on small screens */}
+                {/* Small circular add button next to clip - HIDDEN on small screens (< 640px) */}
                 <button
                   onClick={() => openModal(undefined, index + 1)}
                   className={`hidden sm:flex flex-shrink-0 w-6 h-6 rounded-full border-2 border-dashed transition-all duration-200 hover:scale-110 items-center justify-center ${
